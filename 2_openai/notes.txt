@@ -1,0 +1,9 @@
+Minimal terminology
+Agents represent LLMs
+Handoffs represent interactions
+Guardrails represent controls
+
+Three steps to run an Agents
+1 - create aninstance of Agents
+2 - Use with trace() to track the Agents
+3 - Call runner.run() to run the Agents
