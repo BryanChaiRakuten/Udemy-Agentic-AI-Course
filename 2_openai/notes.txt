@@ -7,3 +7,18 @@ Three steps to run an Agents
 1 - create aninstance of Agents
 2 - Use with trace() to track the Agents
 3 - Call runner.run() to run the Agents
+
+Guardrails
+What Are Guardrails in Agentic AI?
+Guardrails are constraints, policies, or mechanisms that limit or guide the behavior of autonomous AI agents to prevent them from:
+- Acting outside their intended scope
+- Causing harm or breaking rules
+- Producing unsafe or biased outputs
+- Wasting resources or causing denial-of-service-like effects
+- In short: guardrails are the "fences" around what an AI agent is allowed to do.
+Guardrails can themselves be agents also, can use an LLM to be checking that things look good at any
+point in the flow. (Only be apply either to the input at the very begining or
+Input of the first agent or the output of the last agent. Can't insert guardrails all over the place, just have them at the very begining
+or the very end. Design to protect your model against getting an input which is inappropriate or
+not what is intended for. Also so protct it against an output which should ot be shown to the user.
+)
