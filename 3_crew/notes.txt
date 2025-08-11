@@ -8,6 +8,7 @@ crewai create flow my_project
 At home try, office seem to have SSL issues
 crewai create crew my_project
 crewai run
+comment out openAI api key in env file see how the agents.yaml still can use the model?
 
 # crew.py
 The module, which is actually the one which brings together our crew

@@ -5,6 +5,7 @@ from crewai_tools import SerperDevTool
 
 @CrewBase
 class ResearchCrew():
+    # Description of your crew
     """Research crew for comprehensive topic analysis and reporting"""
 
     @agent
@@ -12,7 +13,7 @@ class ResearchCrew():
         return Agent(
             config=self.agents_config['researcher'],
             verbose=True,
-            tools=[SerperDevTool()]
+            tools=[SerperDevTool()] #TODO SETUP THE API TOOL
         )
 
     @agent
@@ -35,6 +36,7 @@ class ResearchCrew():
             output_file='output/report.md'
         )
 
+    # Self dot agents is populated because we have agent decorators around our agent functions methods and then tasks is also decorated here.
     @crew
     def crew(self) -> Crew:
         """Creates the research crew"""
