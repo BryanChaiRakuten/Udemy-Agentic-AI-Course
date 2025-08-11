@@ -1,3 +1,7 @@
+# Cannot call tasks the same thing as you call your agents, will have problem with conflicting names
+
+
+# propose task
 propose:
   description: >
     You are proposing the motion: {motion}.
@@ -5,9 +9,11 @@ propose:
     Be very convincing.
   expected_output: >
     Your clear argument in favor of the motion, in a concise manner.
+  # associate a task with an agent
   agent: debater
   output_file: output/propose.md
 
+# oppose task
 oppose:
   description: >
     You are in opposition to the motion: {motion}.
@@ -17,6 +23,8 @@ oppose:
     Your clear argument against the motion, in a concise manner.
   agent: debater
   output_file: output/oppose.md
+
+# decide task
 decide:
   description: >
     Review the arguments presented by the debaters and decide which side is more convincing.

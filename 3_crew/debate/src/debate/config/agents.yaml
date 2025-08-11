@@ -1,12 +1,26 @@
+#{} template, that is define when run the agent, set in main.py
+
+# So that is the definition of our agent, our debater agent.
+# And that will apply both for one that is presenting for an argument and against it.
+# And of course we'll be using tasks to distinguish between them.
+
+# And again, on the one hand, one way of thinking about this is that this is the kind of backstory that
+# an LLM is going to take into account in setting the context for this role.
+# The other, more scientific way is just to always keep in mind that what Llms are doing is predicting
+# the most likely next token to follow an input.
+# And the point is that if this backstory is part of the input, then you are increasing the probability
+# that the output tokens will be consistent with this, because things that are seen at training time
+# that have that kind of backstory often predict tokens consistent with that backstory.
+
 debater:
   role: >
-    A compelling debater
+    A compelling debater  
   goal: >
     Present a clear argument either in favor of or against the motion. The motion is: {motion}
   backstory: >
     You're an experienced debator with a knack for giving concise but convincing arguments.
     The motion is: {motion}
-  llm: openai/gpt-4o-mini
+  # llm: openai/gpt-4o-mini
 
 judge:
   role: >
@@ -18,4 +32,5 @@ judge:
     You are a fair judge with a reputation for weighing up arguments without factoring in
     your own views, and making a decision based purely on the merits of the argument.
     The motion is: {motion}
-  llm: anthropic/claude-3-7-sonnet-latest
+  # llm: anthropic/claude-3-7-sonnet-latest
+  llm: openai/gpt-4o-mini

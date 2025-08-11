@@ -17,6 +17,7 @@ def run():
     """
     Run the crew.
     """
+    # So inputs when we're running the crew, this is where we choose those template values that we put in our YAML file.
     inputs = {
         'motion': 'There needs to be strict laws to regulate LLMs',
     }

@@ -1,0 +1,17 @@
+# crew workflow
+crewai create crew my_project
+
+# More fixed workflow rather then a crew
+crewai create flow my_project
+
+# TODO
+At home try, office seem to have SSL issues
+crewai create crew my_project
+crewai run
+
+# crew.py
+The module, which is actually the one which brings together our crew
+
+# Going deeper
+Tools - equiping gaents with capabilities
+Context 0 information passed from 1 task to another
