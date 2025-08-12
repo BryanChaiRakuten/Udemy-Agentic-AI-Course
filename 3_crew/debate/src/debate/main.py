@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 import sys
 import warnings
+# import discord
+import pygame
 
 from datetime import datetime
 

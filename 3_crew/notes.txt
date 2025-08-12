@@ -4,11 +4,16 @@ crewai create crew my_project
 # More fixed workflow rather then a crew
 crewai create flow my_project
 
-# TODO
-At home try, office seem to have SSL issues
+# common stuff
 crewai create crew my_project
 crewai run
-comment out openAI api key in env file see how the agents.yaml still can use the model?
+comment out openAI api key in env file see how the agents.yaml still can use the model? NO
+
+Window at home it has its own venv
+cd crewAiProject
+uv add <package-name>
+ uv add crewai[tools]  
+crewai run
 
 # crew.py
 The module, which is actually the one which brings together our crew
