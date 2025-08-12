@@ -6,21 +6,33 @@ from email_agent import email_agent
 import asyncio
 
 class ResearchManager:
-
+    # yield is a keyword used to create generators, which are like functions that can pause and resume their execution, 
+    # returning values one at a time instead of computing them all at once.
     async def run(self, query: str):
         """ Run the deep research process, yielding the status updates and the final report"""
         trace_id = gen_trace_id()
         with trace("Research trace", trace_id=trace_id):
             print(f"View trace: https://platform.openai.com/traces/trace?trace_id={trace_id}")
+            
             yield f"View trace: https://platform.openai.com/traces/trace?trace_id={trace_id}"
             print("Starting research...")
+            
+            yield "Planning searches."  
+            # planner_agent
             search_plan = await self.plan_searches(query)
+
             yield "Searches planned, starting to search..."     
+            # search_agent
             search_results = await self.perform_searches(search_plan)
+
             yield "Searches complete, writing report..."
+            # write_agent
             report = await self.write_report(query, search_results)
+
             yield "Report written, sending email..."
+            # email_agent
             await self.send_email(report)
+
             yield "Email sent, research complete"
             yield report.markdown_report
         
