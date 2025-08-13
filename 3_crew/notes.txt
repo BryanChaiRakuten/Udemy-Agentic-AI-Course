@@ -12,7 +12,7 @@ comment out openAI api key in env file see how the agents.yaml still can use the
 Window at home it has its own venv
 cd crewAiProject
 uv add <package-name>
- uv add crewai[tools]  
+uv add crewai[tools]  
 crewai run
 
 # crew.py

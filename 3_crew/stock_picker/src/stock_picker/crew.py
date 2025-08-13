@@ -7,6 +7,9 @@ from .tools.push_tool import PushNotificationTool
 from crewai.memory import LongTermMemory, ShortTermMemory, EntityMemory
 from crewai.memory.storage.rag_storage import RAGStorage
 from crewai.memory.storage.ltm_sqlite_storage import LTMSQLiteStorage
+ 
+# Structured outputs In other words, we are going to ask our different tasks to be providing information according to a
+# particular JSON schema
 
 class TrendingCompany(BaseModel):
     """ A company that is in the news and attracting attention """
@@ -56,6 +59,7 @@ class StockPicker():
     def find_trending_companies(self) -> Task:
         return Task(
             config=self.tasks_config['find_trending_companies'],
+            # And that is telling it that this task needs to output some JSON in the schema that conforms to TrendingCompanyList.
             output_pydantic=TrendingCompanyList,
         )
 
@@ -72,21 +76,29 @@ class StockPicker():
             config=self.tasks_config['pick_best_company'],
         )
     
-
+    # It's the manager, and we don't want that to be in the list of the of the, the general agents that
+    # are going to be working on the task at hand.
+    # We're going to want to create this separately and handle it separately.
+    # So we create our manager agent like this just as a, as a as a separate variable manager, an agent
+    # that has the config from that's called manager.
 
 
     @crew
     def crew(self) -> Crew:
         """Creates the StockPicker crew"""
 
+        # manager agent
         manager = Agent(
             config=self.agents_config['manager'],
+            # telling crew that this agent can delegate tasks to other agents, equivalent to handoff in OpenAI Agents SDK
             allow_delegation=True
         )
             
         return Crew(
-            agents=self.agents,
-            tasks=self.tasks, 
+            agents=self.agents, # Automatically created by the @agent decorator
+            tasks=self.tasks, # Automatically created by the @task decorator
+            # Hierarchical: A project manager telling workers what to do based on real-time progress. use a manager LLM to assign
+            # Sequential: A factory conveyor belt — parts move in a set order. run tasks in order they are defined
             process=Process.hierarchical,
             verbose=True,
             manager_agent=manager,

@@ -13,6 +13,7 @@ research_trending_companies:
     A report containing detailed analysis of each company
   agent: financial_researcher
   context:
+    # The output of the find_trending_companies task
     - find_trending_companies
   output_file: output/research_report.json
 
@@ -25,5 +26,6 @@ pick_best_company:
     The chosen company and why it was chosen; the companies that were not selected and why they were not selected.
   agent: stock_picker
   context:
+    # The output of the research_trending_companies task
     - research_trending_companies
   output_file: output/decision.md

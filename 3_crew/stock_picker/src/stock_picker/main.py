@@ -3,6 +3,7 @@ import sys
 import warnings
 import os
 from datetime import datetime
+import pandas as pd
 
 from stock_picker.crew import StockPicker
 

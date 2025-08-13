@@ -3,6 +3,7 @@ import sys
 import warnings
 # import discord
 import pygame
+import pandas
 
 from datetime import datetime
 
