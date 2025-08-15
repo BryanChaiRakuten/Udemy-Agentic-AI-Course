@@ -21,3 +21,32 @@ The module, which is actually the one which brings together our crew
 # Going deeper
 Tools - equiping gaents with capabilities
 Context 0 information passed from 1 task to another
+
+#
+Memory, of course, is talking about how you provide information, contextual information to Llms each
+time you call them, and you can implement that yourself just by storing variables and then passing
+them in when you do things like creating tasks so you can do it the sort of manual way.
+But the crew framework also comes with some building blocks that lets you use their constructs around
+memory out of the box, and that comes with pros and cons.
+The pro is that you get up and running quickly, and you can use a lot of the thinking that they put
+behind this.
+The con is that there's there's a learning curve, and it obscures some of the detail of how prompts
+actually work behind the scenes.
+
+# Short term memory
+Temporarily stores recent interactions and outcomes using RAG, enabling agents to 
+access relevant information during the executions
+
+# Long term memory
+Preserves valueable insights and learnings, building knowledge over time
+
+# Entity memory
+Information about, people, places and concepts encoutered during tasks, faciliating 
+deeper understanding and relationship mapping. Uses RAG for storing entity information
+
+# Contextual memory
+Maintains the context of interactions by combining all the above
+
+# User memory
+Stores user-specific information and preferences, enhancing personalization and user experience
+(This is up to us to manage and include in prompts)

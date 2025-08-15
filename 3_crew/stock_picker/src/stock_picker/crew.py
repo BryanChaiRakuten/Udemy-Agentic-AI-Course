@@ -5,11 +5,20 @@ from pydantic import BaseModel, Field
 from typing import List
 from .tools.push_tool import PushNotificationTool
 from crewai.memory import LongTermMemory, ShortTermMemory, EntityMemory
-from crewai.memory.storage.rag_storage import RAGStorage
+from crewai.memory.storage.rag_storage import RAGStorage # vectrr based retrival
 from crewai.memory.storage.ltm_sqlite_storage import LTMSQLiteStorage
  
 # Structured outputs In other words, we are going to ask our different tasks to be providing information according to a
 # particular JSON schema
+
+# Because remember, whilst memory, these abstractions are trying to make memory seem quite magical and
+# taken care of for you.
+# At the end of the day, memory just means more stuff shoved into the prompt, more relevant context
+# put into the prompt so that when you call an LLM it has knowledge.
+# It's in the input is included information about prior conversations or about prior information that it retrieved.
+
+# And then we told our agents we turned memory on by saying memory equals true for the agents that we
+# wanted to remember things.
 
 class TrendingCompany(BaseModel):
     """ A company that is in the news and attracting attention """
@@ -43,7 +52,7 @@ class StockPicker():
     @agent
     def trending_company_finder(self) -> Agent:
         return Agent(config=self.agents_config['trending_company_finder'],
-                     tools=[SerperDevTool()], memory=True)
+                     tools=[SerperDevTool()], memory=True) # to let agent have memory
     
     @agent
     def financial_researcher(self) -> Agent:
@@ -53,7 +62,7 @@ class StockPicker():
     @agent
     def stock_picker(self) -> Agent:
         return Agent(config=self.agents_config['stock_picker'], 
-                     tools=[PushNotificationTool()], memory=True)
+                     tools=[PushNotificationTool()], memory=True) # to let agent have memory, Don't pick the same company twice
     
     @task
     def find_trending_companies(self) -> Task:
@@ -115,13 +124,14 @@ class StockPicker():
                         embedder_config={
                             "provider": "openai",
                             "config": {
-                                "model": 'text-embedding-3-small'
+                                "model": 'text-embedding-3-small' # generate vectors from text
                             }
                         },
                         type="short_term",
                         path="./memory/"
                     )
-                ),            # Entity memory for tracking key information about entities
+                ),            
+            # Entity memory for tracking key information about entities
             entity_memory = EntityMemory(
                 storage=RAGStorage(
                     embedder_config={
