@@ -24,7 +24,7 @@ class EngineeringTeam():
             verbose=True,
             allow_code_execution=True,
             code_execution_mode="safe",  # Uses Docker for safety
-            max_execution_time=500, 
+            max_execution_time=500,
             max_retry_limit=3 
         )
     
@@ -33,6 +33,7 @@ class EngineeringTeam():
         return Agent(
             config=self.agents_config['frontend_engineer'],
             verbose=True,
+            # write the frontend code but not going to have it try and execute as it would bring up a gradio UI in the Docker container
         )
     
     @agent
