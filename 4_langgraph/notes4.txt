@@ -1,0 +1,56 @@
+Terminology:
+- Agent workflows are described in Landgraf speak as a graph.
+
+- State is something that represents the current snapshot, the current state of affairs, the
+status of your whole application.
+It's an object that that needs to encapsulate the state of the world.
+And that object is something which, which, uh, is is shared across the whole application.
+And it's something very fundamental to land graph.
+
+- Nodes are python functions that represent agent logic. They reveive the current state as input, do something, and return an updated state.
+They receive the current state as an input.
+They do something.
+They do something that might, might involve calling an LLM.
+It might involve some sort of a side effect.
+Changing something, writing something to a file, doing something that affects the world.
+And then they return an update, an updated state.
+That's that's what comes afterwards.
+So they take in a state, they do something and they return a new state.
+State should think as immutable, receive a state and return a new state whic is different from the state had before.
+(Do the work)
+
+- Edges are python functions thay determine which Node to execute next based on the state. They can be conditional or fixed.
+So the state can tell it what happens next.
+(CHoose what to do next)
+
+Agent workflows are represnted as graphs
+State repredent the current snapshot of the application
+
+Five steps to the first graph
+1 - Define the State class
+2 - Start the graph Builder
+3 - Create a Node
+4 - Create Edges (May ceate lots of nodes and lots of edges to layout the story, We're laying out the story of what we want our agent system to do, and this is all before it's actually
+live, before it's doing anything. It's not like we create nodes and edges and then things happen. No, we create nodes and edges as part of defining the graph, describing what this will do.
+Think of this as a bit like writing a program, but we're sort of doing it dynamically at runtime.
+So once we've done that, once at runtime, we've we've described the node, we've created the nodes,
+we've created the edges.
+We've laid out our whole agent workflow.
+We then run an operation called compiling the graph.)
+5 - Compile the Graph. (Turn this into something that's readt to be executed)
+
+This is all stuff that that is running when we when we start our our system running, we do this process
+of defining the state class, starting the graph builder, creating nodes and edges, and compiling
+the graph. It's almost like part of running our system involves the sort of two phases, a phase when it's like
+defining itself, laying out the whole workflow, and then a second phase when that actually runs.
+
+And so that first phase, we're not really used to doing that when we code.
+We don't normally have a sort of meta phase when we're describing what it is that we want to do and then running it.
+
+When you run a graph application, when you kick it off, there's two phases.
+Two things happen. The first thing is that it runs some of your code that lays out the graph that defines what it is that
+you're trying to achieve with agents.
+And then once you've done that and that is these five steps here.
+Once you've done that, you then initiate it.
+You then run it, you invoke it. And then off this graph runs.
+And those two phases, both of them are part of running your application.
