@@ -16,7 +16,7 @@ Changing something, writing something to a file, doing something that affects th
 And then they return an update, an updated state.
 That's that's what comes afterwards.
 So they take in a state, they do something and they return a new state.
-State should think as immutable, receive a state and return a new state whic is different from the state had before.
+State should think as immutable, receive a state and return a new state which is different from the state had before.
 (Do the work)
 
 - Edges are python functions thay determine which Node to execute next based on the state. They can be conditional or fixed.
@@ -54,3 +54,9 @@ And then once you've done that and that is these five steps here.
 Once you've done that, you then initiate it.
 You then run it, you invoke it. And then off this graph runs.
 And those two phases, both of them are part of running your application.
+
+More on State
+- State is immutable
+- For each field in your state, can specify a special functon called a reducer
+- When yu return a new State, Langraph uses the reducer to combine this field with existing State
+- This enables Langgraph to run multiple nodes concurrently and combine State without overwriting
