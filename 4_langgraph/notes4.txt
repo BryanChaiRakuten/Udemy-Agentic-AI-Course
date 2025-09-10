@@ -60,3 +60,11 @@ More on State
 - For each field in your state, can specify a special functon called a reducer
 - When yu return a new State, Langraph uses the reducer to combine this field with existing State
 - This enables Langgraph to run multiple nodes concurrently and combine State without overwriting
+
+Super-step
+- The graph describes one super-step, one interaction between
+agents and tools to acheive an outcome.
+- Can be consider a single iteration overt the graph nodes. Nodes that run in parallel are part
+of the super-step, while nodes that run sequentiallu belong to sepaate super-steps.
+- Every user interaction is a freash graph.invoke(state) call
+- The reducer handles udating srare during a super-step but not between super-steps.
