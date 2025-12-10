@@ -16,6 +16,7 @@ from datetime import datetime
 
 load_dotenv(override=True)
 
+# These are things we get back from our assessment
 class State(TypedDict):
     messages: Annotated[List[Any], add_messages]
     success_criteria: str
@@ -23,7 +24,8 @@ class State(TypedDict):
     success_criteria_met: bool
     user_input_needed: bool
 
-
+# Structured outputs schema, tghe schema for the output that we get from out LLM
+# And these descriptions are what will be provided to the LM so that it populates the structured output.
 class EvaluatorOutput(BaseModel):
     feedback: str = Field(description="Feedback on the assistant's response")
     success_criteria_met: bool = Field(description="Whether the success criteria have been met")
@@ -42,6 +44,13 @@ class Sidekick:
         self.browser = None
         self.playwright = None
 
+    # Um, there's one fussy thing about working with async code, which is that the init method, when we
+    # create this, we don't want that to be to be async.
+    # Um, but we need to be able to do some initialization that will be async, like setting up our graph.
+    # And so we have to have like a separate async, uh I can say async method, but a coroutine uh, that,
+    # that is going to be handling that part of it.
+    # And we're going to need to make sure when we when we initialize a sidekick that we can first instantiate
+    # it and then call this setup asynchronously.
     async def setup(self):
         self.tools, self.browser, self.playwright = await playwright_tools()
         self.tools += await other_tools()
@@ -104,6 +113,7 @@ class Sidekick:
         else:
             return "evaluator"
         
+    # This is the utility method that converts our messages into a nice user assistant.
     def format_conversation(self, messages: List[Any]) -> str:
         conversation = "Conversation history:\n\n"
         for message in messages:
@@ -145,6 +155,16 @@ class Sidekick:
         
         evaluator_messages = [SystemMessage(content=system_message), HumanMessage(content=user_message)]
 
+        # So that is the evaluator we've then got at the end of it, I'll just mention again, remember at the
+        # end of the evaluator, we, we we evoke the LLM with output.
+        # And because it's, it's one that has a structured outputs which is what that with output means, uh,
+        # it returns back an object, an eval result object populated, and then we pluck out the fields of that
+        # object, and we populate them in our new state, and we return the new state as all nodes take an old
+        # state, return a new state, and then this route based on evaluation, this is again another of these
+        # condition branches.
+        # We take, uh, we see whether either the success criteria is met or user input is needed.
+        # In either of those situations we need to end, but otherwise we're going to bounce back to the worker
+        # to give it another shot.
         eval_result = self.evaluator_llm_with_output.invoke(evaluator_messages)
         new_state = {
             "messages": [{"role": "assistant", "content": f"Evaluator Feedback on this answer: {eval_result.feedback}"}],
@@ -161,6 +181,9 @@ class Sidekick:
             return "worker"
 
 
+    # We create our graph builder for, for the state of the class that we have created.
+    # And then we add our worker, we add our tools, we add our evaluator, the three nodes.
+    # We add our our edges.
     async def build_graph(self):
         # Set up Graph Builder with State
         graph_builder = StateGraph(State)
@@ -179,22 +202,36 @@ class Sidekick:
         # Compile the graph
         self.graph = graph_builder.compile(checkpointer=self.memory)
 
+    # Actually invokes the graph
     async def run_superstep(self, message, success_criteria, history):
         config = {"configurable": {"thread_id": self.sidekick_id}}
 
         state = {
             "messages": message,
-            "success_criteria": success_criteria or "The answer should be clear and accurate",
+            "success_criteria": success_criteria or "The answer should be clear and accurate", # default if none provided
             "feedback_on_work": None,
             "success_criteria_met": False,
             "user_input_needed": False
         }
-        result = await self.graph.ainvoke(state, config=config)
+        result = await self.graph.ainvoke(state, config=config) # invoke to kick it off
+        # And then we pluck back the user's thing, the user's message, the reply, and the feedback from it.
+        # And we construct our history and that is what we reply.
         user = {"role": "user", "content": message}
         reply = {"role": "assistant", "content": result["messages"][-2].content}
         feedback = {"role": "assistant", "content": result["messages"][-1].content}
         return history + [user, reply, feedback]
-    
+
+    # not 100% sure if this is always cleaning up everything
+    # And I'm talking particularly about, of course, about the browser that we spawn this headless browser.
+    # And the thing to be aware of is, okay, once we've done that, if we then kick off a new sidekick process,
+    # it spawns another browser.
+    # What have we done to that first browser?
+    # Have we closed it?
+    # Have we quit the browser that's running behind the scenes?
+    # Uh, or running in front of the scenes as it would happen?
+    # Uh, so, um, yeah, I've, uh, put this in to do that.
+    # Okay.
+    # And now on to the user interface, the app.
     def cleanup(self):
         if self.browser:
             try:

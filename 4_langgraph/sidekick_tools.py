@@ -49,6 +49,14 @@ async def other_tools():
     wikipedia = WikipediaAPIWrapper()
     wiki_tool = WikipediaQueryRun(api_wrapper=wikipedia)
 
+    # This means that we are giving our, our, uh, LLM the ability to run Python code, much as if you just
+    # typed Python at the command line in one of these kinds of interfaces where it can put in some code and
+    # get back the answer.
+    # And this this is something which isn't sandboxed.
+    # So it's unlike when we did this with crew when we ran Python code within a Docker container.
+    # So it was somewhat insulated from the world.
+    # This is not insulated.
+    # And so this should be used with caution.
     python_repl = PythonREPLTool()
     
     return file_tools + [push_tool, tool_search, python_repl,  wiki_tool]
